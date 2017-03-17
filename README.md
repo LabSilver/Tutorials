@@ -10,8 +10,8 @@ Please contact help@biogrids.org if you run into any problems.
 
 Additionally, before we get started, your life will be made much simpler if you do the following:
 ```
-$ echo "alias cleanpdb=`python /programs/x86_64-linux/rosetta/3.7/tools/protein_tools/scripts/clean_pdb.py`" >> ~/.bashrc
-$ echo "alias rosetta-relax=\`/programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease\`" >> ~/.bashrc
+$ echo "alias cleanpdb='python /programs/x86_64-linux/rosetta/3.7/tools/protein_tools/scripts/clean_pdb.py'" >> ~/.bashrc
+$ echo "alias rosetta-relax='/programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease'" >> ~/.bashrc
 ```
 Normally, we'd then ``source .bashrc`` but BioGrids prevents us from doing this. Instead, ``exit`` and log back into Orchestra.
 
