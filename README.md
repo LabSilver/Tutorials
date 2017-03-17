@@ -36,23 +36,25 @@ This script will only keep the essential atoms that are used by Rosetta, and con
 
 First, we'll want to create a "flags" file that tells Rosetta what sorts of limitations we want to impose in the relaxation. Enter:
 ~~~~
-$ vi firstrelax.flags
+$ vi example.flags
 ~~~~
 Then pressing 'ctrl+I' to write to the new file, paste (middle mouse button, or shift+insert) the following into the file:
 ~~~~
--
+-database /programs/x86_64-linux/rosetta/3.7/main/database    # give the directory of the rosetta databases
+-relax:constrain_relax_to_start_coords                        # force relax to operate near the original coordinates
+-relax:coord_constrain_sidechains                             # keep sidechains from moving
+-relax:ramp_constraints false                                 # keep constant constraint weights
 -ex1                # extra rotamer angles 1
 -ex2                # extra rotamer angles 2
 -use_input_sc       # begin with sidechain angles from a starting input structure
 -flip_HNQ           # include alternate protonation states of H, N, and Q
 -no_optH false      # allows optimization of hydrogens at the end of the run
-
 ~~~~
-
+Relax the structure by entering:
 ~~~~
-relax.linuxgccrelease  -database Rosetta/main/database -relax:constrain_relax_to_start_coords -relax:coord_constrain_sidechains -relax:ramp_constraints false -s your_structure.pdb
+$ bsub -q fast -o output1 -W 1:00 rosetta-relax @example.flags -s 2v95.pdb
 ~~~~
-
+Rosetta computations are intensive, so we need to submit them to the cluster. We use ``bsub -q fast -o output1`` to do submit to the "fast" queue and contain the junk spat out of Rosetta in output1. ``-W 1:00`` reserves 1 hour of computational time for us.
 
 
 For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
