@@ -70,7 +70,7 @@ $ extractpdbs -in:file:silent {silentFile} -in:file:tags {tag1} {tag2} {etc}
 And now we have the pdb corresponding to the best scoring relaxed structure!
 
 
-#Regarding LSF submissions
+# Regarding LSF submissions
 Later you may want to perform jobs that take longer than 12 hours, and may need to pick a different queue that supports these longer jobs. See these pages for information on which queue to submit your jobs to:
 https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF#Which_queue
 https://wiki.med.harvard.edu/Orchestra/ChoosingAQueue
@@ -81,7 +81,7 @@ $ echo alias "BSUB-rosetta-relax='bsub -q short -o output1 -W 12:00 /programs/x8
 ~~~~
 And you'll then be able to perform relaxations with the simple command: ``BSUB-rosetta-relax @{flags} -s {pdb}``
 
-#Further questions
+# Further questions
 For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
 
 \* In instances where you don't have a corresponding crystal structure, you'll need to approximate or predict one. See our sections on 'structure prediction', coming soon.
