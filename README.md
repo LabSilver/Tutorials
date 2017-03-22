@@ -32,7 +32,7 @@ Ideally, we can just clean the junk crystallization molecules off of a known str
 $ cleanpdb {your xtal} {chainIDs}
 ~~~~
 
-This script will only keep the essential atoms that are used by Rosetta, and convert non-canonical amino acids into the nearest canonical counterpart. After cleaning the pdb, it's important that we "relax" it, so that resulting thermodynamic scores are comparable to the structures we will generate later (such as point mutants).
+This script will only keep the essential atoms that are used by Rosetta, and convert non-canonical amino acids into the nearest canonical counterpart. The output will be named {xtal}\_{chainID}.pdb. After cleaning the pdb, it's important that we "relax" it, so that resulting thermodynamic scores are comparable to the structures we will generate later (such as point mutants).
 
 First, we'll want to create a "flags" file that tells Rosetta what sorts of limitations we want to impose in the relaxation. Enter:
 ~~~~
@@ -50,21 +50,33 @@ Then pressing 'ctrl+I' to write to the new file, paste (middle mouse button, or 
 -flip_HNQ           # include alternate protonation states of H, N, and Q
 -no_optH false      # allows optimization of hydrogens at the end of the run
 ~~~~
-Relax the structure by entering:
+We can relax the structure of uncleaved rat CBG (ID: 2v95, here we have cleaned chain A) by entering:
 ~~~~
-$ bsub -q fast -o output1 -W 1:00 rosetta-relax @example.flags -s 2v95.pdb
+$ bsub -q short -o output1 -W 12:00 /programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease @example.flags -s 2v95_A.pdb
 ~~~~
-Rosetta computations are intensive, so we need to submit them to the cluster. We use ``bsub -q fast -o output1`` to do submit to the "fast" queue and contain the junk spat out of Rosetta in output1. ``-W 1:00`` reserves 1 hour of computational time for us.
+Rosetta computations are intensive, so we need to submit them to the cluster. We use ``bsub -q fast -o output1`` to do submit to the "fast" queue and contain the junk spat out of Rosetta in output1. ``-W 12:00`` reserves 12 hour of computational time for us.
 
+The output of this relax run will be a single structure S_0001.pdb, and 'score.sc' a series of different score metrics for that structure. If we include a flag ''-n 1000'' we can create a random sampling of a thousand output structures. But this would massively clutter our workspace, so we can concisely store those structures in a \"silent\" file by including the flag ''-out:silent''.
+
+Later you may want to perform jobs that take longer than 12 hours, and may need to pick a different queue that supports these longer jobs. See these pages for information on which queue to submit your jobs to:
+https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF#Which_queue
+https://wiki.med.harvard.edu/Orchestra/ChoosingAQueue
+
+bsub doesn't recognize aliases, so we needed to use the full location of the relax function here. A way to simplify your life is to add an alias to your ''~\.bashrc'' that includes the bsub details but leaves the flags and structure for you to determine. Add this:
+~~~~
+alias BSUB-rosetta-relax=`bsub -q short -o output1 -W 12:00 /programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease`
+~~~~
+And you'll then be able to perform relaxations with the simple command: ''BSUB-rosetta-relax @{flags} -s {pdb}''
 
 For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
 
+\* In instances where you don't have a corresponding crystal structure, you'll need to approximate or predict one. See our sections on 'structure prediction', coming soon.
+
+### Structure prediction: homology reference
 
 
+### Structure prediction: ab initio, fragment database
 
-
-
-\* In instances where you don't have a corresponding crystal structure, you'll need to approximate or predict one. See our section on 'structure prediction', coming soon.
 ### Evaluating the energy cost of a point mutation
 
 
