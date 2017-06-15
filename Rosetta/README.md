@@ -91,8 +91,17 @@ For more information, see the RosettaCommons page describing how to prepare stru
 
 ### Structure prediction: ab initio, fragment database
 
-### Evaluating the energy cost of a point mutation
+### Ligand docking
+Given a small molecule and protein pair, we may want to elucidate the likely conformation of the ligand-bound complex. This is a process called ligand docking, wherein many positions and rotations of the small molecule are attempted and assessed.
 
+In many enzymes, the ligand interacts with some cofactor within the protein. In this case, we must include additional information to specify the location and structure of the cofactor. If we have a crystal structure that includes the cofactor, we open the structure in PyMol and select the cofactor in order to save it as a '.sdf'. Next we use a python script in order to write a parameter file from the sdf.
+~~~~
+$ python /programs/x86_64-linux/rosetta/3.7/main/source/scripts/python/public/molfile_to_params.py cofactor.sdf
+~~~~
+
+
+
+### Evaluating the energy cost of a point mutation
 
 ### Energy cost of mutations on protein-ligand binding
 
