@@ -1,9 +1,13 @@
-# Tutorials
-These guides are to be executed in Orchestra with the BioGrids environment. Initialize BioGrids on your Orchestra account by running:
+# Rosetta tutorials
 
-``$ /programs/biogrids_setup``
+## Getting started
+These guides are to be executed in Orchestra with the BioGrids environment. Obtain access to the HMS computing cluster, Orchestra here: https://rc.hms.harvard.edu/. You can use Orchestra to perform intensive computational tasks, just log in with a Unix-based command line (the default Terminal for Macs, or the free software Cygwin for PCs: https://cygwin.com/install.html). The command to log in is:
+``$ ``
+Note: I use the dollar sign ($) to indicate entries meant for the command line, otherwise I'm referring to script editing with vim. Don't actually type the dollar sign.
 
-You will be asked if you want to modify your startup files. If you type y, you will be able to access BioGrids applications in the future without additional setup. If you type n, your startup files will not be modified, and you will only have access to BioGrids applications in the current shell.
+Initialize BioGrids on your Orchestra account by sourcing the Biogrids environment:
+``$ source /programs/biogrids.shrc``
+You'll only need to do this once, and then it'll automatically initialize when you log in.
  
 More information on BioGrids setup can be found here: https://wiki.med.harvard.edu/Orchestra/BioGrids
 Please contact help@biogrids.org if you run into any problems.
@@ -11,10 +15,11 @@ Please contact help@biogrids.org if you run into any problems.
 Additionally, before we get started, your life will be made much simpler if you do the following:
 ```
 $ echo "alias cleanpdb='python /programs/x86_64-linux/rosetta/3.7/tools/protein_tools/scripts/clean_pdb.py'" >> ~/.bashrc
-$ echo "alias rosetta-relax='/programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease'" >> ~/.bashrc
+$ echo "alias testrelax='/programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease'" >> ~/.bashrc
 $ echo "alias extractpdbs='/programs/x86_64-linux/rosetta/3.7/main/source/bin/extract_pdbs.linuxgccrelease -database /programs/x86_64-linux/rosetta/3.7/main/database'" >> ~/.bashrc
+$ echo "alias shortrelax='bsub -q short -W 12:00 /programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease'" >> ~/.bashrc
 ```
-Normally, we'd then ``source .bashrc`` but BioGrids prevents us from doing this. Instead, ``exit`` and log back into Orchestra.
+``exit`` and log back into Orchestra to implement these shortcut commands.
 
 ## Rosetta
 In modest attempts at protein redesign we are often concerned with evaluating a handful of rational point mutations for several consequences: impact on protein stability, modification to ligand binding affinity or specificity, and influence on protein-protein interactions. Here, we will use redesign of the corticosteroid binding protein (CBG) as an introduction to Rosetta's applications for informing our choice of point mutants.
