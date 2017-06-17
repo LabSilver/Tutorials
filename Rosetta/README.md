@@ -1,6 +1,7 @@
 # Rosetta tutorials
 
 ## Getting started
+<details><summary> Command line, logging in, sourcing BioGrids</summary><p>
 These guides are to be executed in Orchestra with the BioGrids environment. Obtain access to the HMS computing cluster, Orchestra here: https://rc.hms.harvard.edu/. You can use Orchestra to perform intensive computational tasks, just log in with a Unix-based command line (the default Terminal for Macs, or the free software Cygwin for PCs: https://cygwin.com/install.html). The command to log in is:
 ``$ ``
 Note: I use the dollar sign ($) to indicate entries meant for the command line, otherwise I'm referring to script editing with vim. Don't actually type the dollar sign.
@@ -20,8 +21,22 @@ $ echo "alias extractpdbs='/programs/x86_64-linux/rosetta/3.7/main/source/bin/ex
 $ echo "alias shortrelax='bsub -q short -W 12:00 /programs/x86_64-linux/rosetta/3.7/main/source/bin/relax.linuxgccrelease'" >> ~/.bashrc
 ```
 ``exit`` and log back into Orchestra to implement these shortcut commands.
+</p></details>
 
 ## Rosetta
+<details><summary> I want to: </summary><p>
+Predict a protein structure from scratch
+Predict a protein strucure from homology
+Predict orientations of a protein-protein complex
+Predict the binding mode for a small molecule
+Predict the binding mdoe for a peptide
+Screen mutations of a known protein for stability
+Screen mutations for protein-protein interactions
+Screen mutations for protein-peptide interactions
+Screen mutations for protein-small molecule binding
+</p></details>
+
+
 In modest attempts at protein redesign we are often concerned with evaluating a handful of rational point mutations for several consequences: impact on protein stability, modification to ligand binding affinity or specificity, and influence on protein-protein interactions. Here, we will use redesign of the corticosteroid binding protein (CBG) as an introduction to Rosetta's applications for informing our choice of point mutants.
 
 You can find any of the requisite files for these tutorials in my folders:
