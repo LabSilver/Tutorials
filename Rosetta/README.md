@@ -2,7 +2,7 @@
 
 ## Getting started
 <details><summary> Command line, logging in, sourcing BioGrids</summary><p>
-These guides are to be executed in Orchestra with the BioGrids environment. Obtain access to the HMS computing cluster, Orchestra here: https://rc.hms.harvard.edu/. You can use Orchestra to perform intensive computational tasks, just log in with a Unix-based command line (the default Terminal for Macs, or the free software Cygwin for PCs: https://cygwin.com/install.html). The command to log in is:
+These guides are to be executed in Orchestra with the BioGrids environment. Obtain access to the HMS computing cluster, Orchestra at https://rc.hms.harvard.edu/. You can use Orchestra to perform intensive computational tasks, just log in with a Unix-based command line (the default terminal for Macs; or Cygwin for PCs, free at https://cygwin.com/install.html). The command to log in is:
 
 ``$ ssh -y usrNM@orchestra.med.harvard.edu``
 
