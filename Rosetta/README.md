@@ -112,9 +112,9 @@ For more information, see the [RosettaCommons page](https://www.rosettacommons.o
 ## Fragment picking
 Rosetta has various ways to perturb bond angles in existing backbones and side chains, but sometimes structures must be built piece by piece without the benefit of an starting fold. In these cases, structures are built by small 3, 5, and 9 amino acid *fragments*. Fragments are potential bond angles found in existing crystal structures that correspond to short strings of amino acids within the input sequence (provided as a '.fasta' file). We can produce fragments for a target protein with the 'fragment_picker' application:
 
-We will need: An extended chain '.pdb' for the desired protein sequence, a '.fasta' file for that sequence, a secondary structure prediction for that sequence, a database of possible fragments, and a weights value for deciding which fragments are good.
+We will need: An extended chain '.pdb' for the desired protein sequence, a '.fasta' file for that sequence, a secondary structure prediction for that sequence, a database of possible fragments, and a weights value for deciding which fragments are good. We'll also want to provide flags as instructions to the picker.
 
-**Creating the .pdb file,** To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
+**Creating an extended chain .pdb file,** To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
 ~~~~
 for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
 ~~~~
@@ -126,7 +126,56 @@ Use 'File->Save Molecule...' in order to obtain the extended amino acid as a .pd
 $ /programs/x86_64-linux/rosetta/3.8/tools/perl_tools/getFastaFromCoords.pl -pdbfile {yourPDB} -chain {yourChain}
 ~~~~
 
-**Creating a secondary structure prediction.** The Bloomsbury Centre for Bioinformatics has a [convenient server](http://bioinf.cs.ucl.ac.uk/psipred/) for secondary structure prediction.
+**Creating a secondary structure prediction.** The Bloomsbury Centre for Bioinformatics has a [convenient server](http://bioinf.cs.ucl.ac.uk/psipred/) for secondary structure prediction. Submit your protein sequence and once it has completed, go the the 'Downloads' tab and click 'PSIPRED raw scores in plain text format'.
+
+Upload these files to Orchestra by opening a commandline and navigating to the directory contianing these files. Then enter:
+~~~~
+$ scp {myfile} {usrName}@orchestra.med.harvard.edu:{desiredDirectory}
+~~~~
+You'll also want to rename each of your files to a 5 character code, or the fragment picker will error. Also change the extension of your secondary structure file to '.psipred.ss2':
+~~~~
+$ mv {myfile.file} {XXXXX.file}
+~~~~
+
+**Databases, weights, and flags**
+We want to pass our inputs to the fragment picker, along with instructions to the fragment picker and directions to the database and weights. Create a weights file with ```$ vi simple.wts``` and paste ('I', SHIFT+INS) in the following:
+~~~~
+# score name          priority  wght   max_allowed  extras
+RamaScore               400     2.0     - psipred
+SecondarySimilarity     350     1.0     - psipred
+FragmentCrmsd             0     0.0     - psipred
+~~~~
+Next create your flags file with ```$ vi picker.flags``` and paste:
+~~~~
+# Input databases
+-database                       /programs/x86_64-linux/rosetta/3.8/main/database/
+-in:file:vall                   /programs/x86_64-linux/rosetta/3.8/tools/fragment_tools/vall.apr24.2008.extended
+# Query-related input files
+#-in::file::checkpoint          XXXXX.checkpoint
+-in:file:fasta                  ./XXXXX.fasta
+-in:file:s                      ./XXXXX.pdb
+-frags:ss_pred                  ./XXXXX.psipred.ss2 psipred  # second input is the ID used by '.wts' file
+# Weights file
+-frags:scoring:config           ./simple.wts
+# What should we do?
+-frags:bounded_protocol
+# three-mers only, please
+-frags:frag_sizes               3 5 9
+-frags:n_candidates             200
+-frags:n_frags                  200
+# Output
+-out:file:frag_prefix           ./output/frags
+-frags:describe_fragments       ./frags.fsc
+~~~~
+
+Create an output directory with ```mkdir ./output``` and then run the code with:
+~~~~
+$ /programs/x86_64-linux/rosetta/3.8/main/source/bin/fragment_picker.linuxgccrelease @picker.flags
+~~~~
+If your protein is large, you may want to submit this with bsub.
+
+In the output directory, you should obtain three files: 'frags.200.3mers', 'frags.200.5mers', and 'frags.200.9mers'. These can be fed into Rosetta applications that generate *ab initio* chain conformations for the particular input sequence you provided.
+
 ## Setting constraints
 
 
