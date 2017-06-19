@@ -77,8 +77,11 @@ Primary docking conformations, which will appear as the lowest energy conformati
 
 **Input: what we need to start**
 PDB file for the peptide-binding protein. See section on [Preparing Protein Structures](https://github.com/LabSilver/Tutorials/tree/master/Rosetta#preparing-protein-structures).
+
 PDB file the peptide. See section on [Fragment Picking](https://github.com/LabSilver/Tutorials/blob/master/Rosetta/peptideDocking/README.md#fragment-picking) for instructions on building peptides in pymol.
+
 Fragment files for the peptide. See section on Fragment Picking.
+
 Flags, see below:
 ~~~~
 #inputs:
