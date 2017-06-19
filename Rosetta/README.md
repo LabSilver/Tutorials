@@ -111,8 +111,14 @@ And you'll then be able to perform relaxations with the simple command: ``BSUB-r
 #### Further questions
 For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
 
-## Structure prediction: homology reference
+## Fragment picking
+Rosetta has various ways to perturb bond angles in existing backbones and side chains, but sometimes structures must be built piece by piece without the benefit of an starting fold. In these cases, structures are built by small 3, 5, and 9 amino acid *fragments*. Fragments are potential bond angles found in existing crystal structures that correspond to short strings of amino acids within the input sequence (provided as a '.fasta' file). We can produce fragments for a target protein with the 'fragment_picker' application:
 
+
+## Setting constraints
+
+
+## Structure prediction: homology reference
 
 ## Structure prediction: ab initio, fragment database
 
@@ -130,11 +136,14 @@ Various proteins can bind short peptide chains, which are often flexible. Even i
 **Output: what we can find**
 
 **Input: what we need to start**
-A '.pdb' structure for the peptide-binding protein. The peptide should be placed as a separate chain near the anticipated binding site. It may be in the extended conformation. To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
+**A '.pdb' structure for the peptide-binding protein.** The peptide should be placed as a separate chain near the anticipated binding site. It may be in the extended conformation. To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
 ~~~~
 for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
 ~~~~
 
+Use 'File->Save Molecule...' in order to obtain the extended amino acid as a .pdb file.
+
+**A '.fasta file corresponding to the peptide.** 
 
 ### Evaluating the energy cost of a point mutation
 
