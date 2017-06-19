@@ -73,9 +73,11 @@ In the output directory, you should obtain three files: 'frags.200.3mers', 'frag
 Various proteins can bind short peptide chains, which are often flexible. Even in short peptides there are many degrees of freedom, so it can be important to consider the numerous conformations of the peptide when searching for the lowest energy binding mode. The Rosetta application, FlexPepDocking does just this.
 
 **Output: what we can find**
+
 Primary docking conformations, which will appear as the lowest energy conformations of unique binding modes (as grouped by RMSD).
 
 **Input: what we need to start**
+
 PDB file for the peptide-binding protein. See section on [Preparing Protein Structures](https://github.com/LabSilver/Tutorials/tree/master/Rosetta#preparing-protein-structures).
 
 PDB file the peptide. See section on [Fragment Picking](https://github.com/LabSilver/Tutorials/blob/master/Rosetta/peptideDocking/README.md#fragment-picking) for instructions on building peptides in pymol.
