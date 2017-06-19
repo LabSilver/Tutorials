@@ -31,7 +31,7 @@ Skip to a specific protocol if you want to:
 * Predict a protein strucure from homology
 * Predict orientations of a protein-protein complex
 * Predict the binding mode for a small molecule
-* Predict the binding mdoe for a peptide
+* Predict the binding mode for a peptide
 * Screen mutations of a known protein for stability
 * Screen mutations for protein-protein interactions
 * Screen mutations for protein-peptide interactions
@@ -111,12 +111,12 @@ And you'll then be able to perform relaxations with the simple command: ``BSUB-r
 #### Further questions
 For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
 
-### Structure prediction: homology reference
+## Structure prediction: homology reference
 
 
-### Structure prediction: ab initio, fragment database
+## Structure prediction: ab initio, fragment database
 
-### Ligand docking
+## Ligand binding
 Given a small molecule and protein pair, we may want to elucidate the likely conformation of the ligand-bound complex. This is a process called ligand docking, wherein many positions and rotations of the small molecule are attempted and assessed.
 
 In many enzymes, the ligand interacts with some cofactor within the protein. In this case, we must include additional information to specify the location and structure of the cofactor. If we have a crystal structure that includes the cofactor, we open the structure in PyMol and select the cofactor in order to save it as a '.sdf'. Next we use a python script in order to write a parameter file from the sdf.
@@ -124,6 +124,16 @@ In many enzymes, the ligand interacts with some cofactor within the protein. In 
 $ python /programs/x86_64-linux/rosetta/3.7/main/source/scripts/python/public/molfile_to_params.py cofactor.sdf
 ~~~~
 
+## Peptide binding
+Various proteins can bind short peptide chains, which are often flexible. Even in short peptides there are many degrees of freedom, so it can be important to consider the numerous conformations of the peptide when searching for the lowest energy binding mode. The Rosetta application, FlexPepDocking does just this.
+
+**Output: what we can find**
+
+**Input: what we need to start**
+A '.pdb' structure for the peptide-binding protein. The peptide should be placed as a separate chain near the anticipated binding site. It may be in the extended conformation. To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
+~~~~
+for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
+~~~~
 
 
 ### Evaluating the energy cost of a point mutation
