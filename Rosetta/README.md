@@ -26,7 +26,7 @@ $ echo "alias shortrelax='bsub -q short -W 12:00 /programs/x86_64-linux/rosetta/
 </p></details>
 
 ## Rosetta
-Skip to a specific protocol if you want to:
+Skip to a specific protocol:
 * Predict a protein structure from scratch
 * Predict a protein strucure from homology
 * Predict orientations of a protein-protein complex
@@ -37,13 +37,13 @@ Skip to a specific protocol if you want to:
 * Screen mutations for protein-peptide interactions
 * Screen mutations for protein-small molecule binding
 
-You can find any of the requisite files for these tutorials in my folders:
+You can find the requisite files for these tutorials in my folders:
 ~~~~
 $ cd /home/njr8/public/tutorials/
 ~~~~
 (Navigating in commandline: 'cd' stands for change directory and allows us to move between folders. Beginning a file address with './' will begin the address from the folder you are currently in. Beginning with '../' will begin the address *one folder back* from the current folder. Beginning with '/' will start from the root directory. The other user accounts on orchestra can thus be accessed with '/home/{username}')
 
-### Preparing protein structures
+## Preparing protein structures
 Before we can get started in full, we need to obtain a pdb structure of the protein in question.
 
 Ideally, we can just clean the junk crystallization molecules off of a known structure\*:
@@ -197,14 +197,11 @@ Various proteins can bind short peptide chains, which are often flexible. Even i
 **Output: what we can find**
 
 **Input: what we need to start**
-**A '.pdb' structure for the peptide-binding protein.** The peptide should be placed as a separate chain near the anticipated binding site. It may be in the extended conformation. To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
-~~~~
-for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
-~~~~
+PDB file for the peptide-binding protein. See section on Preparing Protein Structures.
+PDB file the peptide. See section on Fragment Picking for instructions on building peptides in pymol.
+Fragment files for the peptide. See section on Fragment Picking.
 
-Use 'File->Save Molecule...' in order to obtain the extended amino acid as a .pdb file.
 
-**A '.fasta file corresponding to the peptide.** 
 
 ### Evaluating the energy cost of a point mutation
 
