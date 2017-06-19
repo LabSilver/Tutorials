@@ -11,8 +11,8 @@ Note: I use the dollar sign ($) to indicate entries meant for the command line, 
 Initialize BioGrids on your Orchestra account by sourcing the Biogrids environment:
 ``$ source /programs/biogrids.shrc``
 You'll only need to do this once, and then it'll automatically initialize when you log in.
- 
-More information on BioGrids setup can be found here: https://wiki.med.harvard.edu/Orchestra/BioGrids
+[Click here for more information on BioGrids setup.](https://wiki.med.harvard.edu/Orchestra/BioGrids)
+
 Please contact help@biogrids.org if you run into any problems.
 
 Additionally, before we get started, your life will be made much simpler if you do the following:
@@ -70,8 +70,7 @@ Then pressing 'ctrl+I' to write to the new file, paste (middle mouse button, or 
 -flip_HNQ           # include alternate protonation states of H, N, and Q
 -no_optH false      # allows optimization of hydrogens at the end of the run
 ~~~~
-Further flag descriptions and other options can be found here:
-https://www.rosettacommons.org/docs/latest/rosetta_basics/options/options-overview
+[Further flag descriptions and other options](https://www.rosettacommons.org/docs/latest/rosetta_basics/options/options-overview)
 
 We can relax the structure of uncleaved rat CBG (ID: 2v95, here we have cleaned chain A) by entering:
 ~~~~
@@ -109,12 +108,25 @@ $ echo alias "BSUB-rosetta-relax='bsub -q short -o output1 -W 12:00 /programs/x8
 And you'll then be able to perform relaxations with the simple command: ``BSUB-rosetta-relax @{flags} -s {pdb}``
 
 #### Further questions
-For more information, see the RosettaCommons page describing how to prepare structures for Rosetta: https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures
-
+For more information, see the [RosettaCommons page](https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures) describing how to prepare structures for Rosetta.
 ## Fragment picking
 Rosetta has various ways to perturb bond angles in existing backbones and side chains, but sometimes structures must be built piece by piece without the benefit of an starting fold. In these cases, structures are built by small 3, 5, and 9 amino acid *fragments*. Fragments are potential bond angles found in existing crystal structures that correspond to short strings of amino acids within the input sequence (provided as a '.fasta' file). We can produce fragments for a target protein with the 'fragment_picker' application:
 
+We will need: An extended chain '.pdb' for the desired protein sequence, a '.fasta' file for that sequence, a secondary structure prediction for that sequence, a database of possible fragments, and a weights value for deciding which fragments are good.
 
+**Creating the .pdb file,** To obtain an extended peptide with the desired sequence, we can use the 'build' feature in pymol. Just enter the following command but substitute in your amino acid sequence:
+~~~~
+for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
+~~~~
+
+Use 'File->Save Molecule...' in order to obtain the extended amino acid as a .pdb file.
+
+**A '.fasta' file corresponding to the peptide.** We can generate a corresponding '.fasta' by using the perl script 'getFastaFromCoords.pl':
+~~~~
+$ /programs/x86_64-linux/rosetta/3.8/tools/perl_tools/getFastaFromCoords.pl -pdbfile {yourPDB} -chain {yourChain}
+~~~~
+
+**Creating a secondary structure prediction.** The Bloomsbury Centre for Bioinformatics has a [convenient server](http://bioinf.cs.ucl.ac.uk/psipred/) for secondary structure prediction.
 ## Setting constraints
 
 
