@@ -67,20 +67,6 @@ If your protein is large, you may want to submit this with bsub.
 
 In the output directory, you should obtain three files: 'frags.200.3mers', 'frags.200.5mers', and 'frags.200.9mers'. These can be fed into Rosetta applications that generate *ab initio* chain conformations for the particular input sequence you provided.
 
-## Setting constraints
-
-## Structure prediction: homology reference
-
-## Structure prediction: ab initio, fragment database
-
-## Ligand binding
-Given a small molecule and protein pair, we may want to elucidate the likely conformation of the ligand-bound complex. This is a process called ligand docking, wherein many positions and rotations of the small molecule are attempted and assessed.
-
-In many enzymes, the ligand interacts with some cofactor within the protein. In this case, we must include additional information to specify the location and structure of the cofactor. If we have a crystal structure that includes the cofactor, we open the structure in PyMol and select the cofactor in order to save it as a '.sdf'. Next we use a python script in order to write a parameter file from the sdf.
-~~~~
-$ python /programs/x86_64-linux/rosetta/3.7/main/source/scripts/python/public/molfile_to_params.py cofactor.sdf
-~~~~
-
 
 
 ## Peptide binding
