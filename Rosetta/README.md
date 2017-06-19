@@ -109,6 +109,9 @@ And you'll then be able to perform relaxations with the simple command: ``BSUB-r
 
 #### Further questions
 For more information, see the [RosettaCommons page](https://www.rosettacommons.org/docs/latest/rosetta_basics/preparation/preparing-structures) describing how to prepare structures for Rosetta.
+
+
+
 ## Fragment picking
 Rosetta has various ways to perturb bond angles in existing backbones and side chains, but sometimes structures must be built piece by piece without the benefit of an starting fold. In these cases, structures are built by small 3, 5, and 9 amino acid *fragments*. Fragments are potential bond angles found in existing crystal structures that correspond to short strings of amino acids within the input sequence (provided as a '.fasta' file). We can produce fragments for a target protein with the 'fragment_picker' application:
 
@@ -121,12 +124,12 @@ for aa in "DCAHWLGELVWCT": cmd._alt(string.lower(aa))
 
 Use 'File->Save Molecule...' in order to obtain the extended amino acid as a .pdb file.
 
-**A '.fasta' file corresponding to the peptide.** We can generate a corresponding '.fasta' by using the perl script 'getFastaFromCoords.pl':
+**Creating a '.fasta' file corresponding to the peptide.** We can generate a corresponding '.fasta' by using the perl script 'getFastaFromCoords.pl':
 ~~~~
 $ /programs/x86_64-linux/rosetta/3.8/tools/perl_tools/getFastaFromCoords.pl -pdbfile {yourPDB} -chain {yourChain}
 ~~~~
 
-**Creating a secondary structure prediction.** The Bloomsbury Centre for Bioinformatics has a [convenient server](http://bioinf.cs.ucl.ac.uk/psipred/) for secondary structure prediction. Submit your protein sequence and once it has completed, go the the 'Downloads' tab and click 'PSIPRED raw scores in plain text format'.
+**Obtaining a secondary structure prediction.** The Bloomsbury Centre for Bioinformatics has a [convenient server](http://bioinf.cs.ucl.ac.uk/psipred/) for secondary structure prediction. Submit your protein sequence and once it has completed, go the the 'Downloads' tab and click 'PSIPRED raw scores in plain text format'.
 
 Upload these files to Orchestra by opening a commandline and navigating to the directory contianing these files. Then enter:
 ~~~~
@@ -178,7 +181,6 @@ In the output directory, you should obtain three files: 'frags.200.3mers', 'frag
 
 ## Setting constraints
 
-
 ## Structure prediction: homology reference
 
 ## Structure prediction: ab initio, fragment database
@@ -191,17 +193,72 @@ In many enzymes, the ligand interacts with some cofactor within the protein. In 
 $ python /programs/x86_64-linux/rosetta/3.7/main/source/scripts/python/public/molfile_to_params.py cofactor.sdf
 ~~~~
 
+
+
 ## Peptide binding
 Various proteins can bind short peptide chains, which are often flexible. Even in short peptides there are many degrees of freedom, so it can be important to consider the numerous conformations of the peptide when searching for the lowest energy binding mode. The Rosetta application, FlexPepDocking does just this.
 
 **Output: what we can find**
+Primary docking conformations, which will appear as the lowest energy conformations of unique binding modes (as grouped by RMSD).
 
 **Input: what we need to start**
 PDB file for the peptide-binding protein. See section on Preparing Protein Structures.
 PDB file the peptide. See section on Fragment Picking for instructions on building peptides in pymol.
 Fragment files for the peptide. See section on Fragment Picking.
+Flags, see below:
+~~~~
+#inputs:
+-s COMPLEX_ppk.pdb
+-frag3 frags/frags.200.3mers
+-frag9 frags/frags.200.9mers
+-flexPepDocking:frag5 frags/frags.200.5mers
+-nstruct 5
+-database /programs/x86_64-linux/rosetta/3.8/main/database/
+#outputs:
+-out:pdb_gz
+-out:file:silent_struct_type binary
+-out:file:silent decoys.silent
+-scorefile score.sc
+#fragment picker flags:
+-flexPepDocking:frag5_weight 0.25
+-flexPepDocking:frag9_weight 0.1
+#flexpepdock flags:
+-flexPepDocking:lowres_abinitio
+-flexPepDocking:pep_refine
+-flexPepDocking:flexpep_score_only
+#packing flags:
+-ex1
+-ex2aro
+-use_input_sc
+#mute logging:
+-mute protocols.moves.RigidBodyMover
+-mute core.chemical
+-mute core.scoring.etable
+-mute protocols.evalution
+-mute core.pack.rotamer_trials
+-mute protocols.abinitio.FragmentMover
+-mute core.fragment
+-mute protocols.jd2.PDBJobInputter
+~~~~
 
-
+Before running docking, prepack the peptide and protein (optimize their side-chains when separate from one another) using these prepack flags:
+~~~~
+-s COMPLEX.pdb
+-ex1
+-ex2aro
+-use_input_sc
+-flexpep_prepack
+-nstruct 1
+~~~~
+Execute the following, and move the resultant output file 'COMPLEX_0001.pdb' to 'COMPLEX_ppk.pdb':
+~~~~
+$ /programs/x86_64-linux/rosetta/3.8/main/source/bin/FlexPepDocking.linuxgccrelease @prepack.flags
+~~~~
+Docking can be performed on 'COMPLEX_ppk.pdb' by:
+~~~~
+$ /programs/x86_64-linux/rosetta/3.8/main/source/bin/FlexPepDocking.linuxgccrelease @pepdocking.flags
+~~~~
+The outputs are stored in 'decoys.silent' as 'COMPLEX_ppk_0001', 'COMPLEX_ppk_0001'... retrieve the corresponding .pdb files with 'extractpdbs'.
 
 ### Evaluating the energy cost of a point mutation
 
