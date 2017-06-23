@@ -36,6 +36,7 @@ The first line declairs a bond length between atom 'SG' of residue 411, and atom
 
 The second and third lines specify angles of this bond and the supporting bond in the sidechain, respectively. Angles are defined between 3 atoms instead of 2. The ideal value and standard deviation are specified in radians.
 
+Include a constraints file for your rosetta run by including the flag ```-cst_fa_file yourFile.cst```.
 
 ## Ligand binding
 Given a small molecule and protein pair, we may want to elucidate the likely conformation of the ligand-bound complex. This is a process called ligand docking, wherein many positions and rotations of the small molecule are attempted and assessed.
