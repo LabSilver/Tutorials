@@ -19,12 +19,23 @@ For regular ligands, the parameter file is ready to go. If the molecule is coval
 CONNECT FE1
 ICOOR_INTERNAL CONN1 -86.52096884 98.653002277 2.215499854 FE1 N1 C19
 ~~~~
-In the example above, we declare the atom "FE1" as the one connected to the protein. After that, we describe the dihedral (between the protein's atom, FE1, parent atom N1, and grand-parent atom C19), angle (between the protein's atom, FE1, and N1) and bond length (between the protein's atom and FE1). In your particular molecule, you'll need to look into your params file for the equivalent of ```ICOOR_INTERNAL    FE1 .... FE1 N1 C19``` which will specify the parent and grandparent on the right. Then open the structure of this molecular group in position with the corresponding amino acid in the enzyme. Click on the box in the left-bottom of PyMol to enter editing mode. You can then select individual atoms and take the appropriate measurements with the commands: ```dihedral```, ```angle```, ```length```. Dihedral measurements must be made by selecting (in order) protein's atom, linking atom, parent, and grandparent. The angle should be measured by selecting the protein's atom, linking atom, then parent.
+In the example above, we declare the atom "FE1" as the one connected to the protein. After that, we describe the dihedral (between the protein's atom, FE1, parent atom N1, and grand-parent atom C19), angle (between the protein's atom, FE1, and N1) and bond length (between the protein's atom and FE1). In your particular molecule, you'll need to look into your params file for the equivalent of ```ICOOR_INTERNAL    FE1 .... FE1 N1 C19``` which will specify the parent and grandparent on the right. Then open the structure of this molecular group in position with the corresponding amino acid in the enzyme. Click on the box in the left-bottom of PyMol to enter editing mode. You can then select individual atoms and take the appropriate measurements with the commands: ```dihedral```, ```angle```, ```length```. Dihedral measurements must be made by selecting (in order) protein's atom, linking atom, parent, and grandparent. The angle should be measured by selecting the protein's atom, linking atom, then parent. The angles in the .params file are recorded in degrees.
 
 Save the modified .params file. Make sure to include the file when you run rosetta with the flag ```-extra_res_fa 3ID.params```. For covalently affixed molecular groups, you'll also need to create a constraints file.
 
 ## Setting constraints
 In order to perform a particular catalytic activity, enzymes must form a particular geometry of chemical groups at the active site. A constraints file can be used to specify this geometry along with an acceptable range of deviation, so that Rosetta penalizes structure that don't from the active configuration.
+
+Here's an example of the general format:
+~~~~
+AtomPair SG 411 FE1 468 HARMONIC 2.15499854 0.01
+Angle SG 411 FE1 468 N1 468 HARMONIC 1.7218200643 0.034906585
+Angle CB 411 SG 411 FE1 468 HARMONIC 1.9971187489 0.034906585
+~~~~
+The first line declairs a bond length between atom 'SG' of residue 411, and atom 'FE1' of residue 468. The harmonic penalty for deviations from the ideal value is used. The ideal bond length is specified in angstroms, and then an effective standard deviation for the penalty.
+
+The second and third lines specify angles of this bond and the supporting bond in the sidechain, respectively. Angles are defined between 3 atoms instead of 2. The ideal value and standard deviation are specified in radians.
+
 
 ## Ligand binding
 Given a small molecule and protein pair, we may want to elucidate the likely conformation of the ligand-bound complex. This is a process called ligand docking, wherein many positions and rotations of the small molecule are attempted and assessed.
